@@ -238,22 +238,117 @@ public class Ordenamiento {
 
         // Cuenta las ocurrencias de cada dígito
         for (int i = 0; i < n; i++) {
-            count[(array[i] / exp) % 10]++;
+            count[Math.abs(array[i] / exp) % 10]++;
         }
 
         // Actualiza los índices en el array de conteo
         for (int i = 1; i < 10; i++) {
             count[i] += count[i - 1];
         }
-
+        
         // Construye el array ordenado
         for (int i = n - 1; i >= 0; i--) {
-            int digit = (array[i] / exp) % 10;
+            int digit = Math.abs(array[i] / exp) % 10;
             output[count[digit] - 1] = array[i];
             count[digit]--;
         }
 
         return output;
     }
+    
+ // Método de ordenamiento por inserción para matrices (por filas)
+    public static int[][] insertionSortRows(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[i].length; j++) {
+                int key = matrix[i][j];
+                int k = j - 1;
+                while (k >= 0 && matrix[i][k] > key) {
+                    matrix[i][k + 1] = matrix[i][k];
+                    k--;
+                }
+                matrix[i][k + 1] = key;
+            }
+        }
+        return matrix;
+    }
+
+    // Método de ordenamiento por inserción para matrices (por columnas)
+    public static int[][] insertionSortCols(int[][] matrix) {
+        for (int j = 0; j < matrix[0].length; j++) {
+            for (int i = 1; i < matrix.length; i++) {
+                int key = matrix[i][j];
+                int k = i - 1;
+                while (k >= 0 && matrix[k][j] > key) {
+                    matrix[k + 1][j] = matrix[k][j];
+                    k--;
+                }
+                matrix[k + 1][j] = key;
+            }
+        }
+        return matrix;
+    }
+
+    // Método de ordenamiento por selección para matrices (por filas)
+    public static int[][] selectionSortRows(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length - 1; j++) {
+                int minIdx = j;
+                for (int k = j + 1; k < matrix[i].length; k++) {
+                    if (matrix[i][k] < matrix[i][minIdx]) {
+                        minIdx = k;
+                    }
+                }
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[i][minIdx];
+                matrix[i][minIdx] = temp;
+            }
+        }
+        return matrix;
+    }
+
+    // Método de ordenamiento por burbuja para matrices (por filas)
+    public static int[][] bubbleSortRows(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length - 1; j++) {
+                for (int k = 0; k < matrix[i].length - j - 1; k++) {
+                    if (matrix[i][k] > matrix[i][k + 1]) {
+                        int temp = matrix[i][k];
+                        matrix[i][k] = matrix[i][k + 1];
+                        matrix[i][k + 1] = temp;
+                    }
+                }
+            }
+        }
+        return matrix;
+    }
+    
+    // Método de ordenamiento Shell Sort para matrices (por filas)
+    public static int[][] shellSortRows(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int gap = matrix[i].length / 2; gap > 0; gap /= 2) {
+                for (int j = gap; j < matrix[i].length; j++) {
+                    int temp = matrix[i][j];
+                    int k;
+                    for (k = j; k >= gap && matrix[i][k - gap] > temp; k -= gap) {
+                        matrix[i][k] = matrix[i][k - gap];
+                    }
+                    matrix[i][k] = temp;
+                }
+            }
+        }
+        return matrix;
+    }
+
+    // Método de ordenamiento Radix Sort para matrices (por filas)
+    public static int[][] radixSortRows(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            matrix[i] = radixSort(matrix[i]);
+        }
+        return matrix;
+    }
+    
+ 
+
+   
 
 }

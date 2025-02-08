@@ -84,5 +84,94 @@ public class Busqueda {
 
         return -1; // Elemento no encontrado
 	}
+	
+	// Búsqueda Secuencial en Matriz
+    public static int[] busquedaSecuencial(int[][] matriz, int x) {
+        System.out.print("Busqueda Secuencial en Matriz ");
+        int iteraciones = 0;
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                iteraciones++;
+                if (matriz[i][j] == x) {
+                    System.out.printf("Se encontro el elemento en la posicion [%d, %d], comparaciones: %d \n", i, j, iteraciones);
+                    return new int[]{i, j};
+                }
+            }
+        }
+        System.out.printf("No se encontro el elemento, comparaciones: %d \n", iteraciones);
+        return new int[]{-1, -1};
+    }
+
+    // Búsqueda Binaria en Matriz Ordenada
+    public static int[] busquedaBinaria(int[][] matriz, int x) {
+        System.out.print("Busqueda Binaria en Matriz ");
+        int filas = matriz.length;
+        int columnas = matriz[0].length;
+        int izquierda = 0, derecha = filas * columnas - 1;
+        int iteraciones = 0;
+
+        while (izquierda <= derecha) {
+            iteraciones++;
+            int medio = izquierda + (derecha - izquierda) / 2;
+            int fila = medio / columnas;
+            int columna = medio % columnas;
+
+            if (matriz[fila][columna] == x) {
+                System.out.printf("Se encontro el elemento en la posicion [%d, %d], comparaciones: %d \n", fila, columna, iteraciones);
+                return new int[]{fila, columna};
+            }
+
+            if (matriz[fila][columna] < x) {
+                izquierda = medio + 1;
+            } else {
+                derecha = medio - 1;
+            }
+        }
+
+        System.out.printf("No se encontro el elemento, comparaciones: %d \n", iteraciones);
+        return new int[]{-1, -1};
+    }
+
+    // Búsqueda en Matriz Ordenada por Interpolación (Aproximada)
+    public static int[] busquedaInterpolacion(int[][] matriz, int x) {
+        System.out.print("Busqueda Interpolación en Matriz ");
+        int filas = matriz.length;
+        int columnas = matriz[0].length;
+        int inicio = 0, fin = filas * columnas - 1;
+        int iteraciones = 0;
+
+        while (inicio <= fin) {
+            iteraciones++;
+            if (matriz[fin / columnas][fin % columnas] == matriz[inicio / columnas][inicio % columnas]) {
+                if (matriz[inicio / columnas][inicio % columnas] == x) {
+                    return new int[]{inicio / columnas, inicio % columnas};
+                } else {
+                    break;
+                }
+            }
+
+            int pos = inicio + ((x - matriz[inicio / columnas][inicio % columnas]) * (fin - inicio)) /
+                    (matriz[fin / columnas][fin % columnas] - matriz[inicio / columnas][inicio % columnas]);
+
+            if (pos < inicio || pos > fin) break;
+
+            int fila = pos / columnas;
+            int columna = pos % columnas;
+
+            if (matriz[fila][columna] == x) {
+                System.out.printf("Se encontro el elemento en la posicion [%d, %d], comparaciones: %d \n", fila, columna, iteraciones);
+                return new int[]{fila, columna};
+            }
+
+            if (matriz[fila][columna] < x) {
+                inicio = pos + 1;
+            } else {
+                fin = pos - 1;
+            }
+        }
+
+        System.out.printf("No se encontro el elemento, comparaciones: %d \n", iteraciones);
+        return new int[]{-1, -1};
+    }
 
 }
